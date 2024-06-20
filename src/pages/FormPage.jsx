@@ -43,8 +43,9 @@ export default function ProfileForm() {
       setCurrentCard(prev => prev + 2);
       return;
     }
-    if(currentCard==1 && !message){
+    if((currentCard==1 && !message) ||(currentCard==1 && formData[cards[1].field] != previousCode ) ){
       //we check for validity of code
+      setPreviousCode(formData[cards[1].field])
       setLoading(true)
       const res= await fetch('https://haick24-reg-form.onrender.com/check-code', {
         method: 'POST',
@@ -57,16 +58,31 @@ export default function ProfileForm() {
       });
       const response = await res.json()
       if(res.ok){
-        console.log(response)
         setMessage(`your team name is ${response.team}`)
       }else{
         setMessage(`code entered is wrong!`)
       }
       setLoading(false)
+      
       return;
     }
+    setMessage("")
     if(currentCard == 1 && !theUserIsLeader){
       setCurrentCard(4)
+      return;
+    }
+    if(currentCard == 19 && formData[cards[currentCard].field]== "No"){
+      // skip to talk about experience
+      setCurrentCard(prev => prev +2);
+      return;
+    }
+    if(currentCard==0 && formData[cards[currentCard].field]== "I don't have a team"){
+      setCurrentCard(4);
+      return
+    }
+    if(currentCard == 9 && formData[cards[currentCard].field] == "No"){
+      setCurrentCard(13)
+      return;
     }
     if (currentCard < cards.length - 1) {
       setCurrentCard((step) => step + 1);
@@ -74,7 +90,6 @@ export default function ProfileForm() {
       //submit 
       onSubmit(formData,setTeamCode,setModalMessage,setShowModal,setIsError)
     }
-    setMessage("")
   };
 
   const handlePrev = (e) => {
@@ -83,8 +98,13 @@ export default function ProfileForm() {
       setCurrentCard(step => step-2);
       return;
     }
-    if(!theUserIsLeader && currentCard==4){
+    if(!theUserIsLeader && currentCard==4 && formData["isTeamLeader"] == "No" ){
       setCurrentCard(1);
+      return;
+    }
+    if(currentCard==4 && formData["isTeamLeader"] == "I don't have a team"){
+      
+      setCurrentCard(0);
       return;
     }
     setCurrentCard((prev) => prev - 1);

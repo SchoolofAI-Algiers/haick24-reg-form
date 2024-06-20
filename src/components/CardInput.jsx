@@ -102,7 +102,7 @@ export default function CardInput({
             ) : (
               <input
                 type={cards[currentCard].type}
-                value={formData[cardInfo.field]}
+                value={formData[cardInfo.field] || ""}
                 id={cards[currentCard].field}
                 {...register(cards[currentCard].field, { required: 'This field is required' })}
                 onChange={handleTextChange}

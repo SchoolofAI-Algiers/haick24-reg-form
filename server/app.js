@@ -11,18 +11,18 @@ app.use(cors());
 
 const participantSchema = new mongoose.Schema({
   isTeamLeader: { type: String, required: true },
-  codeTeam: { type: String, required: function() { return !this.isTeamLeader; }, unique: true },
-  isAgreedMembersJoined: { type: String, required: function() { return this.isTeamLeader; } },
-  teamName: { type: String, required: function() { return this.isTeamLeader; } },
+  codeTeam: { type: String, required: function() { return this.isTeamLeader=="No"; } },
+  isAgreedMembersJoined: { type: String, required: function() { return this.isTeamLeader=="Yes"; } },
+  teamName: { type: String, required: function() { return this.isTeamLeader=="Yes"; } },
   fullName: { type: String, required: true },
   email: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   securityNumber: { type: String, required: true },
   discordTag: { type: String, required: true },
   isStudent: { type: String, required: true },
-  universityName: { type: String, required: function() { return this.isStudent; } },
-  studyField: { type: String, required: function() { return this.isStudent; } },
-  level: { type: String, required: function() { return this.isStudent; } },
+  universityName: { type: String, required: function() { return this.isStudent== "Yes"; } },
+  studyField: { type: String, required: function() { return this.isStudent == "Yes"; } },
+  level: { type: String, required: function() { return this.isStudent == "Yes"; } },
   aiLevel: { type: String, required: true },
   field: { type: String, required: true },
   githubLink: { type: String, required: true },
@@ -30,12 +30,11 @@ const participantSchema = new mongoose.Schema({
   cvLink: { type: String },
   linkedinLink: { type: String },
   participated: { type: String, required: true },
-  experience: { type: String, required: function() { return this.participated; } },
+  experience: { type: String, required: function() { return this.participated == "Yes"; } },
   motivation: { type: String, required: true },
   shirtSize: { type: String, required: true }
 });
 
-participantSchema.index({ codeTeam: 1 }, { unique: true });
 
 const Participant = mongoose.model('Participant', participantSchema);
 
@@ -57,12 +56,13 @@ const generateUniqueCode = async () => {
 app.post('/submit-form', async (req, res) => {
   const formData = req.body;
   try {
-    if (formData.isTeamLeader) {
+    if (formData.isTeamLeader == "Yes") {
       formData.codeTeam = await generateUniqueCode();
+    }else if(formData.isTeamLeader == "I don't have a team"){
+      formData.codeTeam = "1"
     }
-
     const newParticipant = await Participant.create(formData);
-    res.status(200).json({ message: 'Form submission saved', codeTeam: newParticipant.codeTeam });
+    res.status(200).json({ message: 'Form submission saved', codeTeam: formData["isTeamLeader"]=="Yes" && newParticipant.codeTeam });
   } catch (err) {
     console.error('Error saving form submission:', err);
     res.status(500).send('Internal Server Error');
