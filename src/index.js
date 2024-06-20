@@ -137,12 +137,14 @@ export const cards = [
         label : "Enter your github profile link",
         type:"text",
         field: 'githubLink',
+        placeholder:"https://github.com/user",
         required:true
     },
     {
         title :"Your Kaggle *",
         lable:"Enter your kaggle profile link",
         type:"text",
+        placeholder:"https://kaggle.com/user",
         field:"kaggleLink",
         required:true
     },
@@ -158,6 +160,7 @@ export const cards = [
         title :"Your Linkedin *",
         required:false,
         label:"Enter your Linkedin profile Link",
+        placeholder:"https://linkedin.com/user-in",
         type:"text",
         field :"linkedinLink"
     },

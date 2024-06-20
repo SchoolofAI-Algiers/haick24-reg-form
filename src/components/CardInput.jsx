@@ -1,72 +1,59 @@
-'use client';
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import FrameArrow from '../assets/FrameArrow.png';
 import { Label } from './ui/label';
-import { cards } from '..';
+import { cards} from '../index';
 import { useController } from 'react-hook-form';
+import { Loader } from '@/lib/Loader';
+
 const cardLength = cards.length;
 
 export default function CardInput({
   cardInfo,
-  control,
-  watch,
   currentCard,
-  setCurrentCard,
-  trigger,
+  control,
   register,
-  reset,
   errors,
-  handleSubmit,
+  formData,
+  handleNext,
+  handlePrev,
+  setValue,
+  isLoading,
+  message,
+  setFormData
 }) {
-
-  const formData = watch()
   const {field} = useController({
     name : cardInfo.field,
     control
   })
-  function processForm(data) {
-    console.log("wiiii8")
-    console.log(data);
+  const handleRangeChange = (e) => {
+    setValue(cardInfo.field, e.target.value);
+    console.log(field.name,e.target.value)
+    setFormData({
+      ...formData,
+      [field.name]: e.target.value,
+    });
+  };
+  //formData[field.name] && setValue(formData[field.name])
+  const handleChange = (value) => {
+    setValue(cardInfo.field, value);
+    console.log(field.name,value)
+    setFormData({
+      ...formData,
+      [field.name]: value,
+    });
+  };
+  const handleTextChange=(e)=>{
+    setFormData({
+      ...formData,
+      [field.name]: e.target.value,
+    });
   }
-  const next = async (e) => {
-    e.preventDefault()
-    handleSubmit(processForm)()
-    const fields = [cards[currentCard].field];
-    const output = await trigger(fields, { shouldFocus: true });
-    console.log(field,output)
-    if (!output) return;
-    if (field.name == "isTeamLeader" && field.value == "Yes"){
-      setCurrentCard(prev => prev + 2)
-    }
-    if(currentCard == 1){
-      setCurrentCard(4)
-    }
-    if (currentCard < cards.length - 1) {
-      setCurrentCard((step) => step + 1);
-    }else{
-      handleSubmit(processForm)()
-    }
-    reset();
-  };
-
-  const prev = (e) => {
-    e.preventDefault()
-    if (currentCard > 0) {
-      setCurrentCard((step) => step - 1);
-    }
-  };
 
   return (
-    <Card className="cardBg max-w-3xl w-full rounded-xl px-4 lg:px-8 text-white z-10 py-16">
-      
+    <Card className="cardBg max-w-3xl w-full rounded-xl px-4 lg:px-8 text-white z-10 py-12 relative">
+      {isLoading && <Loader />}
       <CardHeader className="p-0">
         <CardTitle
           style={{ fontFamily: 'Work Sans, sans-serif', fontWeight: 600 }}
@@ -82,19 +69,15 @@ export default function CardInput({
         </CardDescription>
       </CardHeader>
       <div>
-        {cardInfo.type == 'card_select' ? (
+        {cardInfo.type === 'card_select' ? (
           <div className="mt-6 ml-8">
             <RadioGroup
-            value={field.value}
-            onChange = {field.onChange}
-                     >
+              value={formData[field.name]}
+              onValueChange={handleChange}
+            >
               {cardInfo.options.map((op, index) => (
                 <div key={index} className="flex items-center space-x-2 mb-4">
-                  <RadioGroupItem
-                    
-                    value={op}
-                    id={op}
-                  />
+                  <RadioGroupItem value={op} id={op} />
                   <Label htmlFor={op} className="text-lg">
                     {op}
                   </Label>
@@ -104,24 +87,29 @@ export default function CardInput({
           </div>
         ) : (
           <div>
-            {
-              cardInfo.type == "range" ? 
-            
+            {cardInfo.type === 'range' ? (
               <input
-              type={"range"}
-             min={0}
-             max={10}
-              id={cards[currentCard].field}
-              {...register(cards[currentCard].field)}
-              className="border-0 border-b-2 w-full my-6 bg-transparent py-2 outline-none"
-            />
-            :  <input
-            type={cards[currentCard].type}
-              
-            id={cards[currentCard].field}
-            {...register(cards[currentCard].field)}
-            className="border-0 border-b-2 w-full my-6 bg-transparent py-2 outline-none"
-          />}
+                type="range"
+                min={0}
+                max={10}
+                value={formData[field.name]}
+                id={cards[currentCard].field}
+                
+                {...register(cards[currentCard].field)}
+                onChange={handleRangeChange}
+                className="border-0 border-b-2 w-full my-6 bg-transparent py-2 outline-none"
+              />
+            ) : (
+              <input
+                type={cards[currentCard].type}
+                value={formData[cardInfo.field]}
+                id={cards[currentCard].field}
+                {...register(cards[currentCard].field, { required: 'This field is required' })}
+                onChange={handleTextChange}
+                placeholder={cardInfo.placeholder}
+                className="border-0 border-b-2 w-full my-6 bg-transparent py-2 outline-none"
+              />
+            )}
           </div>
         )}
         {errors[cards[currentCard].field]?.message && (
@@ -130,39 +118,27 @@ export default function CardInput({
           </p>
         )}
       </div>
-      {
-        <CardFooter
-          className={`flex items-center mt-12 ${
-            currentCard != 0 || currentCard != cardLength
-              ? 'justify-between'
-              : currentCard == 0
-              ? 'justify-end'
-              : 'justify-start'
-          }`}
-        >
-          {currentCard != 0 && (
-            <Button
-              className="bg-[#00B5E2] rounded-xl font-medium px-[22px] py-[10px] text-[16px] border-0 hover:bg-[#00B5E2] flex items-center justify-center"
-              onClick={prev}
-            >
-              
-                <span className="mr-[5px]">Back <img className='inline-block' src={FrameArrow} /></span> 
-            
-            </Button>
-          )}
-          {currentCard != cardLength && (
-            <Button
+      {message.includes("wrong") ? <span className="text-red-500 font-bold">{message}</span> : <span className="text-primary font-bold">{message}</span>}
+      <CardFooter className={`flex items-center mt-12 ${currentCard !== 0 ? 'justify-between' : 'justify-end'}`}>
+        
+        {currentCard !== 0 && (
+          <Button
+            className="bg-[#00B5E2] rounded-xl font-medium px-[22px] py-[10px] text-[16px] border-0 hover:bg-[#00B5E2] flex items-center justify-center"
+            onClick={handlePrev}
+          >
+            <span className="mr-[5px]">Back <img className="inline-block" src={FrameArrow} /></span>
+          </Button>
+        )}
+        {currentCard !== cardLength && (
+          <Button
             type="button"
-              onClick={next}
-              className="bg-[#00B5E2] rounded-xl font-medium px-[22px] py-[10px] border-0 hover:bg-[#00B5E2] flex items-center justify-center "
-            >
-              
-                <span className="text-[16px]">{currentCard == cards.length - 1 ? "Submit" : "Next" } <img className='inline-block' src={FrameArrow} /></span> 
-             
-            </Button>
-          )}
-        </CardFooter>
-      }
+            onClick={handleNext}
+            className="bg-[#00B5E2] rounded-xl font-medium px-[22px] py-[10px] border-0 hover:bg-[#00B5E2] flex items-center justify-center"
+          >
+            <span className="text-[16px]">{currentCard === cards.length - 1 ? "Submit" : "Next"} <img className="inline-block" src={FrameArrow} /></span>
+          </Button>
+        )}
+      </CardFooter>
     </Card>
   );
 }

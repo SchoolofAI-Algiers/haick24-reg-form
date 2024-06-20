@@ -10,10 +10,10 @@ import Header from './components/Header';
 
 function App() {
   return (
-    <div className="container px-4 flex flex-col items-center h-fit overflow-hidden">
+    <div className="container px-4 flex flex-col items-center max-h-screen h-fit overflow-hidden">
       <img src={Grid} className="w-full object-cover max-h-[calc(100vh)] absolute bottom-0 z-0" />
-      <img src={curve1} className="sh-screen absolute -left-20  pt-[120px]" />
-      <img src={curve2} className="sh-screen absolute right-0 top-32 xl:top-16 pt-[120px]" />
+      <img src={curve1} className="h-screen absolute -left-20  pt-[120px]" />
+      <img src={curve2} className="absolute right-0 top-32 xl:top-16 pt-[120px]" />
       <img src={curve3} className="absolute bottom-0 translate-x-[20%] translate-y-[0%] z-10" />
       <img src={curve4} className="absolute left-0 -bottom-0 z-10" />
       <div className='h-56 w-56 bg-primary absolute top-20 blur-[200px] rounded-full -z-40' />

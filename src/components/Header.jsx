@@ -1,6 +1,5 @@
 import haicklogo from "../assets/haick-logo.png"
 import soailogo from "../assets/soai-logo.png"
-
 const Header = () => {
   return (
     <div className="flex justify-between container w-screen mx-auto px-8 py-4">
