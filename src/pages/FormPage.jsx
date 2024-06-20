@@ -68,6 +68,7 @@ export default function ProfileForm() {
       return;
     }
     setMessage("")
+    setPreviousCode("")
     if(currentCard == 1 && !theUserIsLeader){
       setCurrentCard(4)
       return;
@@ -106,6 +107,14 @@ export default function ProfileForm() {
     if(currentCard==4 && formData["isTeamLeader"] == "I don't have a team"){
       
       setCurrentCard(0);
+      return;
+    }
+    if(currentCard==13 && formData["isStudent"] == "No"){
+      setCurrentCard(9);
+      return;
+    }
+    if(currentCard==21 && formData["participated"] == "No"){
+      setCurrentCard(19);
       return;
     }
     setCurrentCard((prev) => prev - 1);

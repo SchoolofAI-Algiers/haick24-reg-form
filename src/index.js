@@ -120,7 +120,7 @@ export const cards = [
     {
         title :"What fields of Ai do you study",
         label :"",
-        type:"card_select",
+        type:"checkbox_group",
         options : [
             "Machine Learning",
             "Deep Learning",
@@ -157,7 +157,7 @@ export const cards = [
     }
     ,
     {
-        title :"Your Linkedin *",
+        title :"Your Linkedin",
         required:false,
         label:"Enter your Linkedin profile Link",
         placeholder:"https://linkedin.com/user-in",
@@ -180,14 +180,16 @@ export const cards = [
         required:true,
         label:"share with us your previous decription in datathons",
         type:"text",
-        field :"experience"
+        field :"experience",
+        placeholder:"talk about your experience"
     },
     {
         title :"Why Do You Want to be part of Haick *",
         required:true,
         label:"show us your motivation",
         type:"text",
-        field :"motivation"
+        field :"motivation",
+        placeholder:"talk about your motivation .."
     },
     {
         title :"Your Shirt Size ? *",

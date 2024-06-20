@@ -24,7 +24,7 @@ const participantSchema = new mongoose.Schema({
   studyField: { type: String, required: function() { return this.isStudent == "Yes"; } },
   level: { type: String, required: function() { return this.isStudent == "Yes"; } },
   aiLevel: { type: String, required: true },
-  field: { type: String, required: true },
+  field: { type: [String], required: true },
   githubLink: { type: String, required: true },
   kaggleLink: { type: String, required: true },
   cvLink: { type: String },

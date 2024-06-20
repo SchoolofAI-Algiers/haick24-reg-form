@@ -8,7 +8,7 @@ export function cn(...inputs) {
 
 export const onSubmit = async (data,setTeamCode,setModalMessage,setShowModal,setIsError) => {
   try {
-    const response = await fetch('http://localhost:3001/submit-form', {
+    const response = await fetch('https://haick24-reg-form.onrender.com/submit-form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
