@@ -46,7 +46,7 @@ export default function ProfileForm() {
     if(currentCard==1 && !message){
       //we check for validity of code
       setLoading(true)
-      const res= await fetch('http://localhost:3001/check-code', {
+      const res= await fetch('https://haick24-reg-form.onrender.com/check-code', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
