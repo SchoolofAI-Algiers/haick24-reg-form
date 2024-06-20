@@ -15,6 +15,7 @@ export default function ProfileForm() {
   const [message,setMessage]=useState("")
   const [showModal,setShowModal]=useState(false)
   const [isError,setIsError]=useState(false)
+  const [previousCode,setPreviousCode]=useState("")
   const [modalMessage,setModalMessage]=useState("")
   const {
     register,
