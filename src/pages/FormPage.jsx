@@ -34,7 +34,7 @@ export default function ProfileForm() {
   const [theUserIsLeader,setIsLeader]=useState(false)
   const [teamCode,setTeamCode]=useState("")
   const handleNext = async (e) => {
-    e.preventDefault()
+   e.preventDefault()
     const fields = [cards[currentCard].field];
     const output = await trigger(fields);
     if(!output && !formData[cards[currentCard].field]) return;
@@ -44,6 +44,9 @@ export default function ProfileForm() {
       setCurrentCard(prev => prev + 2);
       return;
     }
+    if(cards[currentCard].field =="isTeamLeader" && formData["isTeamLeader"] == "No"){
+      setIsLeader(false)
+    } 
     if((currentCard==1 && !message) ||(currentCard==1 && formData[cards[1].field] != previousCode ) ){
       //we check for validity of code
       setPreviousCode(formData[cards[1].field])
@@ -90,6 +93,10 @@ export default function ProfileForm() {
       setCurrentCard((step) => step + 1);
     }else if(currentCard == cards.length - 1){
       //submit 
+      if(formData["isTeamLeader"] == "No"){
+        delete formData["isAgreedMembersJoined"]
+        delete formData["teamName"]
+      }
       onSubmit(formData,setTeamCode,setModalMessage,setShowModal,setIsError)
     }
   };
