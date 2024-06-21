@@ -106,7 +106,7 @@ export default function CardInput({
         ) : cardInfo.type === 'checkbox_group' ? (
           <div className="mt-6 ml-8 flex flex-col">
             {cardInfo.options.map((op, index) => (
-              <div key={index} className="space-x-4 custom-checkbox">
+              <div key={index} className="custom-checkbox">
                 <input
                   type="checkbox"
                   value={op}
@@ -115,8 +115,8 @@ export default function CardInput({
                   checked={formData[cardInfo.field]?.includes(op) || false}
                   onChange={handleCheckboxChange}
                 />
-                <span className="checkmark"></span>
-                <Label htmlFor={op} className="text-lg">
+                
+                <Label htmlFor={op} className="text-start checkbox-label">
                   {op}
                 </Label>
               </div>
