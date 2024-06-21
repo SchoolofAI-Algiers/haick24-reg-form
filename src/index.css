@@ -116,11 +116,19 @@ input[type="range"]:active::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-/* Create a custom checkbox */
+
+/* Hide the default checkbox */
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Style the container */
 .custom-checkbox {
-  display: flex;
+  display: inline-block;
   position: relative;
-  padding-left: 25px;
+  padding-left: 0;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 22px;
@@ -128,46 +136,20 @@ input[type="range"]:active::-webkit-slider-thumb {
 }
 
 /* Custom checkbox design */
-.custom-checkbox input[type="checkbox"] + .checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background-color: #eee;
-  border-radius: 50%;
-  transition: background-color 0.3s;
-}
-
-/* Custom checkbox hover effect */
-.custom-checkbox:hover input[type="checkbox"] + .checkmark {
-  background-color: #ccc;
+.custom-checkbox .checkbox-label {
+  width: auto;
+  padding: 8px 12px;
+  border-radius: 5px;
+  height: 100%;
+  border: solid 1px white;
+  cursor: pointer;
+  transition: border .1s ease-in-out;
 }
 
 /* Custom checkbox when checked */
-.custom-checkbox input[type="checkbox"]:checked + .checkmark {
-  background-color: #2196F3;
+.custom-checkbox input[type="checkbox"]:checked ~ .checkbox-label {
+  border: 2px solid white;
+  font-weight: bold;
 }
 
-/* Custom checkmark (the tick) */
-.custom-checkbox .checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
 
-/* Show the checkmark when checked */
-.custom-checkbox input[type="checkbox"]:checked + .checkmark:after {
-  display: block;
-}
-
-/* Checkmark design */
-.custom-checkbox .checkmark:after {
-  left: 7px;
-  top: 4px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
