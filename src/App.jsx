@@ -27,7 +27,7 @@ function App() {
          */}
 
          <div className='flex flex-col items-center max-w-xl mx-auto shadow-lg rounded-md absolute top-[50%] left-[50%] -translate-y-[50%] -translate-x-[50%]'>
-              <h1 className='font-bold text-white text-[60px] text-center'>Registration are <br/>
+              <h1 className='font-bold text-white text-center'>Registration are <br/>
               <span className=' text-primary'>Closed</span></h1>
               <div className='px-4 py-2 rounded-lg bg-slate-500 font-semibold text-white z-50 w-fit'>
                 <h3>{"registration.setState("}<span className='text-red-700'>{"'closed');"}</span></h3>
